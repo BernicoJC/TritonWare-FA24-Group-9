@@ -2,21 +2,20 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+
 public class PlayerMovement : MonoBehaviour
 {
     private float horizontal;
     private float vertical;
     private bool isFacingRight = true;
-
     public float speed = 10f;
     //private float dodgingTime = 0.05f;
-
     [SerializeField] private Rigidbody2D rb;
 
     // Start is called before the first frame update
     void Start()
     {
-        
+
     }
 
     // Update is called once per frame
