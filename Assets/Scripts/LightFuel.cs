@@ -5,6 +5,8 @@ using UnityEngine;
 public class LightFuel : MonoBehaviour
 {
 
+    public LightManager lightManager;
+
 
     public void OnTriggerEnter2D(Collider2D collision)
     {
@@ -12,15 +14,17 @@ public class LightFuel : MonoBehaviour
 
         if (collision.CompareTag("Player"))
         {
-            // Get the PlayerLight script from the player
-            PlayerLight playerLight = collision.GetComponent<PlayerLight>();
+            //// Get the PlayerLight script from the player
+            //PlayerLight playerLight = collision.GetComponent<PlayerLight>();
 
-            // Check if the PlayerLight script is available
-            if (playerLight != null)
-            {
-                playerLight.restore = true;
-                Destroy(gameObject); // Destroy the pickup after use
-            }
+            //// Check if the PlayerLight script is available
+            //if (playerLight != null)
+            //{
+            //    playerLight.restore = true;
+            //    Destroy(gameObject); // Destroy the pickup after use
+            //}
+            Destroy(gameObject); // Destroy the pickup after use
+            lightManager.lightCount++;
         }
     }
 }
