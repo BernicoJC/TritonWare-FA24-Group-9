@@ -10,6 +10,7 @@ public class PlayerMovement : MonoBehaviour
     private bool isFacingRight = true;
     public float speed = 10f;
     //private float dodgingTime = 0.05f;
+    public bool cantWalk = false;
     [SerializeField] private Rigidbody2D rb;
 
     // Start is called before the first frame update
@@ -31,7 +32,14 @@ public class PlayerMovement : MonoBehaviour
 
     private void FixedUpdate()
     {
-        rb.velocity = new Vector2(horizontal * speed, vertical * speed);
+        if (cantWalk)
+        {
+            rb.velocity = new Vector2(0, 0);
+        }
+        else
+        {
+            rb.velocity = new Vector2(horizontal * speed, vertical * speed);
+        }
     }
 
     private void Flip()

@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Rendering.Universal;
+using UnityEngine.UI;
 
 public class PlayerLight : MonoBehaviour
 {
@@ -13,7 +14,11 @@ public class PlayerLight : MonoBehaviour
     public bool needRestore = false;
     public float restore_speed = 0.2f;
 
+    public float rechargeTimer = 0f;
     public LightManager lightManager;
+    public PlayerMovement PlayerMovement;
+
+    public Image RechargeUI;
 
     // Start is called before the first frame update
     void Start()
@@ -63,15 +68,42 @@ public class PlayerLight : MonoBehaviour
             playerLight.pointLightOuterRadius = init_radius * scalar;
         }
 
-        if (Input.GetKeyDown(KeyCode.Z))
+        if (rechargeTimer < 0)
         {
-            if(lightManager.lightCount > 0)
+            rechargeTimer+=1.0f;
+        }
+
+        if (Input.GetKey(KeyCode.Z))
+        {
+            if(lightManager.lightCount > 0 && rechargeTimer >= 0f)
             {
-                // Add timer
+                PlayerMovement.cantWalk = true;
+                rechargeTimer += 1.0f;
+
+                // Display the loading wheel
+                RechargeUI.gameObject.SetActive(true);
+                RechargeUI.fillAmount = rechargeTimer / 300.0f;
+
                 // Add animation trigger
-                needRestore = true;
-                lightManager.lightCount--;
+
+                if (rechargeTimer > 300.0f)
+                {
+                    RechargeUI.gameObject.SetActive(false);
+                    // Add animation trigger exit
+                    needRestore = true;
+                    lightManager.lightCount--;
+                    PlayerMovement.cantWalk = false;
+                    rechargeTimer = -60f;
+                }
             }
+        }
+
+        else
+        {
+            // Fade the loading wheel
+            RechargeUI.gameObject.SetActive(false);
+            PlayerMovement.cantWalk = false;
+            rechargeTimer = -60f; // So you can't immediately recharge after finishing a charge
         }
     }
 }
