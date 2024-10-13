@@ -5,7 +5,7 @@ using UnityEngine;
 public class ProgressManager : MonoBehaviour
 {
     public int itemCount;
-    public GameObject exitDoor;
+    public ExitDoorProperties exitDoor;
     public TMPro.TMP_Text text;
 
     // Update is called once per frame
@@ -15,7 +15,7 @@ public class ProgressManager : MonoBehaviour
 
         if (itemCount == 3)
         {
-            exitDoor.GetComponent<SpriteRenderer>().color = Color.green;
+            exitDoor.open = true;
         }
     }
 }
