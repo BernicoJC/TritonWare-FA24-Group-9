@@ -18,6 +18,8 @@ public class PlayerLight : MonoBehaviour
     public LightManager lightManager;
     public PlayerMovement PlayerMovement;
 
+    float oldTimerBeforeDim;
+
     public Image RechargeUI;
 
     // Start is called before the first frame update
@@ -73,6 +75,7 @@ public class PlayerLight : MonoBehaviour
             rechargeTimer+=1.0f;
         }
 
+        // Recharge Light System
         if (Input.GetKey(KeyCode.Z))
         {
             if(lightManager.lightCount > 0 && rechargeTimer >= 0f)
@@ -105,5 +108,27 @@ public class PlayerLight : MonoBehaviour
             PlayerMovement.cantWalk = false;
             rechargeTimer = -60f; // So you can't immediately recharge after finishing a charge
         }
+
+        // TEMPORARY ACTIVATOR OF DIM AND UNDIM, TO BE REMOVED
+        if (Input.GetKeyDown(KeyCode.C))
+        {
+            DimLight();
+        }
+
+        if (Input.GetKeyDown(KeyCode.V))
+        {
+            UndimLight();
+        }
+    }
+
+    public void DimLight()
+    {
+        oldTimerBeforeDim = light_timer;
+        light_timer = 25f;
+    }
+
+    public void UndimLight()
+    {
+        light_timer = oldTimerBeforeDim;
     }
 }
