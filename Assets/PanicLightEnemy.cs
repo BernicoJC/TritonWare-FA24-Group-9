@@ -2,9 +2,10 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CalmLightMonster : MonoBehaviour
+public class PanicLightEnemy : MonoBehaviour
 {
     public float lifeTime = 7f;
+    public float responseTime = 2f;
     public float agroTime = 60f;
     public float speed = 10f;
 
@@ -19,6 +20,7 @@ public class CalmLightMonster : MonoBehaviour
         Player = GameObject.FindGameObjectWithTag("Player");
         playerLight = Player.GetComponent<PlayerLight>();
         StartCoroutine(LifeTime());
+        StartCoroutine(ListenToResponds());
     }
 
     // Update is called once per frame
@@ -28,11 +30,6 @@ public class CalmLightMonster : MonoBehaviour
         {
             StopCoroutine(LifeTime());
             transform.position = Vector2.MoveTowards(this.transform.position, Player.transform.position, speed * Time.deltaTime);
-        }
-
-        if (playerLight.rechargeTimer > 60f)
-        {
-            triggered = true;
         }
     }
 
@@ -55,6 +52,15 @@ public class CalmLightMonster : MonoBehaviour
                 Destroy(other.gameObject);
                 // Start a coroutine for ending screen
             }
+        }
+    }
+
+    private IEnumerator ListenToResponds()
+    {
+        yield return new WaitForSeconds(responseTime);
+        if (playerLight.light_timer > 25f)
+        {
+            triggered = true;
         }
     }
 }

@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CalmLightMonster : MonoBehaviour
+public class CalmWalkMonster : MonoBehaviour
 {
     public float lifeTime = 7f;
     public float agroTime = 60f;
@@ -11,13 +11,13 @@ public class CalmLightMonster : MonoBehaviour
     private bool triggered = false;
 
     private GameObject Player;
-    private PlayerLight playerLight;
+    private PlayerMovement playerMovement;
 
     // Start is called before the first frame update
     void Start()
     {
         Player = GameObject.FindGameObjectWithTag("Player");
-        playerLight = Player.GetComponent<PlayerLight>();
+        playerMovement = Player.GetComponent<PlayerMovement>();
         StartCoroutine(LifeTime());
     }
 
@@ -29,8 +29,12 @@ public class CalmLightMonster : MonoBehaviour
             StopCoroutine(LifeTime());
             transform.position = Vector2.MoveTowards(this.transform.position, Player.transform.position, speed * Time.deltaTime);
         }
+        else
+        {
+            transform.position = Vector2.MoveTowards(this.transform.position, Player.transform.position, speed * Time.deltaTime * 0.02f);
+        }
 
-        if (playerLight.rechargeTimer > 60f)
+        if (playerMovement.horizontal > 0f || playerMovement.vertical > 0f)
         {
             triggered = true;
         }

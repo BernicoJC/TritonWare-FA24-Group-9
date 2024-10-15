@@ -10,7 +10,7 @@ public class PlayerLight : MonoBehaviour
     public float init_intensity = 1.0f;
     public float init_radius = 5.0f;
     public float light_duration = 30.0f;
-    private float light_timer = 0f;
+    public float light_timer = 0f;
     public bool needRestore = false;
     public float restore_speed = 0.2f;
 
@@ -108,17 +108,6 @@ public class PlayerLight : MonoBehaviour
             PlayerMovement.cantWalk = false;
             rechargeTimer = -60f; // So you can't immediately recharge after finishing a charge
         }
-
-        // TEMPORARY ACTIVATOR OF DIM AND UNDIM, TO BE REMOVED
-        //if (Input.GetKeyDown(KeyCode.C))
-        //{
-        //    DimLight();
-        //}
-
-        //if (Input.GetKeyDown(KeyCode.V))
-        //{
-        //    UndimLight();
-        //}
     }
 
     public void DimLight()
