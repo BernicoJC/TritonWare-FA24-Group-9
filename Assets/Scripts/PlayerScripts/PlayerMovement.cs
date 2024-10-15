@@ -5,19 +5,13 @@ using UnityEngine;
 
 public class PlayerMovement : MonoBehaviour
 {
-    private float horizontal;
-    private float vertical;
+    public float horizontal;
+    public float vertical;
     private bool isFacingRight = true;
     public float speed = 10f;
     //private float dodgingTime = 0.05f;
     public bool cantWalk = false;
     [SerializeField] private Rigidbody2D rb;
-
-    // Start is called before the first frame update
-    void Start()
-    {
-
-    }
 
     // Update is called once per frame
     void Update()

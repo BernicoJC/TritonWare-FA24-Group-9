@@ -30,10 +30,16 @@ public class MonsterManager : MonoBehaviour
         Vector3 monsterPosition = new Vector3(Random.Range(playerPosition.x - 5f, playerPosition.x + 5f), playerPosition.y + 5f, playerPosition.z); 
         GameObject newMonster = Instantiate(monsterType, monsterPosition, Quaternion.identity);
 
-        playerLight.DimLight();
+        if (newMonster.tag == "LightMonster")
+        {
+            playerLight.DimLight();
+        }
         yield return new WaitForSeconds(monsterEventTime);
 
-        playerLight.UndimLight();
+        if (newMonster.tag == "LightMonster")
+        {
+            playerLight.UndimLight();
+        }
         yield return new WaitForSeconds(intervalTime);
         StartCoroutine(SummonMonster(objectsToSpawn[Random.Range(0, objectsToSpawn.Count)]));
     }
