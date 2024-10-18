@@ -24,7 +24,7 @@ public class LightFuel : MonoBehaviour
             //    Destroy(gameObject); // Destroy the pickup after use
             //}
             Destroy(gameObject); // Destroy the pickup after use
-            lightManager.lightCount++;
+            lightManager.lightCount+=3;
         }
     }
 }
