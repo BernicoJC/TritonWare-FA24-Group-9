@@ -12,10 +12,32 @@ public class MonsterManager : MonoBehaviour
     private PlayerLight playerLight;
     [SerializeField]
     private List<GameObject> objectsToSpawn = new List<GameObject>();
+    [SerializeField]
+    private ProgressManager progressManager;
 
     void Start()
     {
         StartCoroutine(GracePeriod());
+    }
+
+    private void Update()
+    {
+        if (progressManager.itemCount == 0)
+        {
+            intervalTime = 20f;
+        }
+        if (progressManager.itemCount == 1)
+        {
+            intervalTime = 15f;
+        }
+        if (progressManager.itemCount == 2)
+        {
+            intervalTime = 10f;
+        }
+        if (progressManager.itemCount == 3)
+        {
+            intervalTime = 5f;
+        }
     }
 
     private IEnumerator GracePeriod()
