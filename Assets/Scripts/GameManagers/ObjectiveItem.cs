@@ -1,18 +1,21 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class ObjectiveItem : MonoBehaviour
 {
     public ProgressManager progressManager;
-    private bool Examined = false;
-    
+    public PatientInformationUI patientInformationUI;
+    public string patientName;
+
     void OnCollisionEnter2D(Collision2D other)
     {
-        if (other.collider.gameObject.tag == "Player" && !Examined)
+        if (other.collider.gameObject.tag == "Player")
         {
-            Examined = true;
             progressManager.itemCount += 1;
+
+            patientInformationUI.ChangePatientName(patientName);
 
             Destroy(gameObject);
         }

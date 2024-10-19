@@ -13,7 +13,7 @@ public class ProgressManager : MonoBehaviour
     {
         text.text = "Items Found: " + (itemCount.ToString());
 
-        if (itemCount == 3)
+        if (itemCount == 4)
         {
             exitDoor.open = true;
         }
