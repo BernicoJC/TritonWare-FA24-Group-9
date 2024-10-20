@@ -80,9 +80,9 @@ public class PlayerLight : MonoBehaviour
         {
             if (lightManager.lightCount > 0 && rechargeTimer >= 0f)
             {
-                Debug.Log("Hold");
+                // Debug.Log("Hold");
                 PlayerMovement.cantWalk = true;
-                rechargeTimer += 10.0f;
+                rechargeTimer += 1.0f;
 
                 // Display the loading wheel
                 RechargeUI.gameObject.SetActive(true);
@@ -100,13 +100,13 @@ public class PlayerLight : MonoBehaviour
                     rechargeTimer = -60f;
                 }
             }
-            else
-            {
-                Debug.Log("light count: ");
-                Debug.Log(lightManager.lightCount);
-                Debug.Log("recharge timer: ");
-                Debug.Log(rechargeTimer);
-            }
+            // else
+            // {
+            //     Debug.Log("light count: ");
+            //     Debug.Log(lightManager.lightCount);
+            //     Debug.Log("recharge timer: ");
+            //     Debug.Log(rechargeTimer);
+            // }
         }
 
         else

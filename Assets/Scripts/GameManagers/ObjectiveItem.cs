@@ -15,7 +15,7 @@ public class ObjectiveItem : MonoBehaviour
         {
             progressManager.itemCount += 1;
 
-            patientInformationUI.ChangePatientName(patientName);
+            // patientInformationUI.ChangePatientName(patientName);
 
             Destroy(gameObject);
         }

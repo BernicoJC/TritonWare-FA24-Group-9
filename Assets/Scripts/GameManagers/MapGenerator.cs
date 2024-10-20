@@ -1,17 +1,21 @@
 using System.Collections;
 using System.Collections.Generic;
+using UnityEngine.Tilemaps;
 using UnityEngine;
 using System.IO;
 
 public class MapGenerator : MonoBehaviour
 {
-    public GameObject floorTile;
-    public GameObject topFloorTile;
-    public GameObject wallBottomTile;
-    public GameObject wallMiddleTile;
-    public GameObject wallTopTile;
-    public GameObject wallRoofTile;
-    public GameObject emptyTile;
+    public Tilemap floorTilemap;
+    public Tilemap wallTilemap;
+    public Tilemap emptyTilemap;
+    public TileBase floorTile;
+    public TileBase topFloorTile;
+    public TileBase wallBottomTile;
+    public TileBase wallMiddleTile;
+    public TileBase wallTopTile;
+    public TileBase wallRoofTile;
+    public TileBase emptyTile;
     public GameObject matchstick;
     public GameObject objectiveItem;
     public GameObject exitItem;
@@ -21,7 +25,6 @@ public class MapGenerator : MonoBehaviour
     {
         GenerateMap();
         SpawnItems();
-
     }
 
     void GenerateMap()
@@ -35,44 +38,70 @@ public class MapGenerator : MonoBehaviour
             for (int x = 0; x < tiles.Length; x++)
             {
                 int tileType = int.Parse(tiles[x]);
-                GameObject tile = null;
+                Vector3Int tilePosition = new Vector3Int(y, -x, 0);
+
 
                 // Instantiate the correct tile based on the tileType
 
-                if (tileType == 0)
-                {
-                    tile = Instantiate(emptyTile, new Vector3(y, -x, 0), Quaternion.identity);
-                    tile.SetActive(true);
-                }
                 if (tileType >= 1)
                 {
                     int aboveTileType = int.Parse(lines[y].Split(',')[x - 1]);
-                    if (aboveTileType == 0) // Assuming '0' is a wall tile
+                    if (aboveTileType == 0)
                     {
-                        tile = Instantiate(topFloorTile, new Vector3(y, -x, 0), Quaternion.identity);
-                        tile.SetActive(true);
-                        // tile = Instantiate(wallBottomTile, new Vector3(y, -x - 1, 0), Quaternion.identity);
-                        // tile.SetActive(true);
-                        // tile = Instantiate(wallMiddleTile, new Vector3(y, -x - 2, 0), Quaternion.identity);
-                        // tile.SetActive(true);
-                        // tile = Instantiate(wallTopTile, new Vector3(y, -x - 3, 0), Quaternion.identity);
-                        // tile.SetActive(true);
-                        // tile = Instantiate(wallRoofTile, new Vector3(y, -x - 4, 0), Quaternion.identity);
-                        // tile.SetActive(true);
+                        floorTilemap.SetTile(tilePosition, topFloorTile);
                     }
                     else
                     {
-                        tile = Instantiate(floorTile, new Vector3(y, -x, 0), Quaternion.identity);
-                        tile.SetActive(true);
+                        floorTilemap.SetTile(tilePosition, floorTile);
                     }
-
                 }
+                else if (tileType == 0)
+                {
+                    if (x < tiles.Length - 6 && int.Parse(lines[y].Split(',')[x + 1]) >= 1)
+                    {
+                        wallTilemap.SetTile(tilePosition, wallBottomTile);
+                    }
+                    else
+                    {
+                        emptyTilemap.SetTile(tilePosition, emptyTile);
+                    }
+                }
+
+
+                // if (tileType == 0)
+                // {
+                //     tile = Instantiate(emptyTile, new Vector3(y, -x, 0), Quaternion.identity);
+                //     tile.SetActive(true);
+                // }
+                // if (tileType >= 1)
+                // {
+                //     int aboveTileType = int.Parse(lines[y].Split(',')[x - 1]);
+                //     if (aboveTileType == 0) // Assuming '0' is a wall tile
+                //     {
+                //         tile = Instantiate(topFloorTile, new Vector3(y, -x, 0), Quaternion.identity);
+                //         tile.SetActive(true);
+                //         // tile = Instantiate(wallBottomTile, new Vector3(y, -x - 1, 0), Quaternion.identity);
+                //         // tile.SetActive(true);
+                //         // tile = Instantiate(wallMiddleTile, new Vector3(y, -x - 2, 0), Quaternion.identity);
+                //         // tile.SetActive(true);
+                //         // tile = Instantiate(wallTopTile, new Vector3(y, -x - 3, 0), Quaternion.identity);
+                //         // tile.SetActive(true);
+                //         // tile = Instantiate(wallRoofTile, new Vector3(y, -x - 4, 0), Quaternion.identity);
+                //         // tile.SetActive(true);
+                //     }
+                //     else
+                //     {
+                //         tile = Instantiate(floorTile, new Vector3(y, -x, 0), Quaternion.identity);
+                //         tile.SetActive(true);
+                //     }
+
+                // }
 
                 // Optional: Set the parent to keep the hierarchy clean
-                if (tile != null)
-                {
-                    tile.transform.parent = transform;
-                }
+                // if (tile != null)
+                // {
+                //     tile.transform.parent = transform;
+                // }
             }
         }
     }
