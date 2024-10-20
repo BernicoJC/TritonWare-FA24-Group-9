@@ -72,16 +72,17 @@ public class PlayerLight : MonoBehaviour
 
         if (rechargeTimer < 0)
         {
-            rechargeTimer+=1.0f;
+            rechargeTimer += 1.0f;
         }
 
         // Recharge Light System
         if (Input.GetKey(KeyCode.Z))
         {
-            if(lightManager.lightCount > 0 && rechargeTimer >= 0f)
+            if (lightManager.lightCount > 0 && rechargeTimer >= 0f)
             {
+                Debug.Log("Hold");
                 PlayerMovement.cantWalk = true;
-                rechargeTimer += 1.0f;
+                rechargeTimer += 10.0f;
 
                 // Display the loading wheel
                 RechargeUI.gameObject.SetActive(true);
@@ -98,6 +99,13 @@ public class PlayerLight : MonoBehaviour
                     PlayerMovement.cantWalk = false;
                     rechargeTimer = -60f;
                 }
+            }
+            else
+            {
+                Debug.Log("light count: ");
+                Debug.Log(lightManager.lightCount);
+                Debug.Log("recharge timer: ");
+                Debug.Log(rechargeTimer);
             }
         }
 
