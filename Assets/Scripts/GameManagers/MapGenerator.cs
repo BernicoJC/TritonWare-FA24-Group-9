@@ -19,18 +19,26 @@ public class MapGenerator : MonoBehaviour
     public GameObject matchstick;
     public GameObject objectiveItem;
     public GameObject exitItem;
+    private string map;
+
+    private List<GameObject> instantiatedObjects = new List<GameObject>();
+
 
     // Start is called before the first frame update
     void Start()
     {
-        GenerateMap();
-        SpawnItems();
+        int randomNumber = Random.Range(1, 6);
+        map = "Map" + randomNumber;
+        Debug.Log(map);
+        ClearOldMap();
+        GenerateMap(map);
+        SpawnItems(map);
     }
 
-    void GenerateMap()
+    void GenerateMap(string map)
     {
         // Read CSV file
-        string path = Path.Combine(Application.dataPath, "Maps", "Map1", "tile_map.csv");
+        string path = Path.Combine(Application.dataPath, "Maps", map, "tile_map.csv");
         string[] lines = File.ReadAllLines(path);
         for (int y = 0; y < lines.Length; y++)
         {
@@ -66,48 +74,12 @@ public class MapGenerator : MonoBehaviour
                         emptyTilemap.SetTile(tilePosition, emptyTile);
                     }
                 }
-
-
-                // if (tileType == 0)
-                // {
-                //     tile = Instantiate(emptyTile, new Vector3(y, -x, 0), Quaternion.identity);
-                //     tile.SetActive(true);
-                // }
-                // if (tileType >= 1)
-                // {
-                //     int aboveTileType = int.Parse(lines[y].Split(',')[x - 1]);
-                //     if (aboveTileType == 0) // Assuming '0' is a wall tile
-                //     {
-                //         tile = Instantiate(topFloorTile, new Vector3(y, -x, 0), Quaternion.identity);
-                //         tile.SetActive(true);
-                //         // tile = Instantiate(wallBottomTile, new Vector3(y, -x - 1, 0), Quaternion.identity);
-                //         // tile.SetActive(true);
-                //         // tile = Instantiate(wallMiddleTile, new Vector3(y, -x - 2, 0), Quaternion.identity);
-                //         // tile.SetActive(true);
-                //         // tile = Instantiate(wallTopTile, new Vector3(y, -x - 3, 0), Quaternion.identity);
-                //         // tile.SetActive(true);
-                //         // tile = Instantiate(wallRoofTile, new Vector3(y, -x - 4, 0), Quaternion.identity);
-                //         // tile.SetActive(true);
-                //     }
-                //     else
-                //     {
-                //         tile = Instantiate(floorTile, new Vector3(y, -x, 0), Quaternion.identity);
-                //         tile.SetActive(true);
-                //     }
-
-                // }
-
-                // Optional: Set the parent to keep the hierarchy clean
-                // if (tile != null)
-                // {
-                //     tile.transform.parent = transform;
-                // }
             }
         }
     }
-    private void SpawnItems()
+    private void SpawnItems(string map)
     {
-        List<Vector2> roomCenters = ReadRoomCentersFromCSV();
+        List<Vector2> roomCenters = ReadRoomCentersFromCSV(map);
         int center_index = 0;
         foreach (Vector2 center in roomCenters)
         {
@@ -118,6 +90,7 @@ public class MapGenerator : MonoBehaviour
                 // Instantiate the matchstick prefab at the room center
                 GameObject newExitItem = Instantiate(exitItem, spawnPosition, Quaternion.identity);
                 newExitItem.SetActive(true);
+                instantiatedObjects.Add(newExitItem);
             }
             if (2 <= center_index && center_index <= 4)
             {
@@ -126,26 +99,32 @@ public class MapGenerator : MonoBehaviour
                 // Instantiate the matchstick prefab at the room center
                 GameObject newObjectiveItem = Instantiate(objectiveItem, spawnPosition, Quaternion.identity);
                 newObjectiveItem.SetActive(true);
+                instantiatedObjects.Add(newObjectiveItem);
             }
             if (center_index >= 5)
             {
-                // Convert room center to world position
-                Vector3 spawnPosition = new Vector3(center.y, -1 * center.x, 0);
-                // Instantiate the matchstick prefab at the room center
-                GameObject newMatchstick = Instantiate(matchstick, spawnPosition, Quaternion.identity);
-                newMatchstick.SetActive(true);
+                float randomValue = Random.value;
+                if (randomValue < 1.0f)
+                {
+                    // Convert room center to world position
+                    Vector3 spawnPosition = new Vector3(center.y, -1 * center.x, 0);
+                    // Instantiate the matchstick prefab at the room center
+                    GameObject newMatchstick = Instantiate(matchstick, spawnPosition, Quaternion.identity);
+                    newMatchstick.SetActive(true);
+                    instantiatedObjects.Add(newMatchstick);
+                }
             }
             center_index++;
         }
     }
 
-    private List<Vector2> ReadRoomCentersFromCSV()
+    private List<Vector2> ReadRoomCentersFromCSV(string map)
     {
-        string filePath = "Assets/Maps/Map1/room_centers.csv";
+        string path = Path.Combine(Application.dataPath, "Maps", map, "room_centers.csv");
         List<Vector2> roomCenters = new List<Vector2>();
 
         // Read the CSV file
-        using (StreamReader reader = new StreamReader(filePath))
+        using (StreamReader reader = new StreamReader(path))
         {
             string line;
             while ((line = reader.ReadLine()) != null)
@@ -163,5 +142,28 @@ public class MapGenerator : MonoBehaviour
         }
 
         return roomCenters;
+    }
+
+    void ClearOldMap()
+    {
+        // Clear all tiles to prevent memory leaks
+        floorTilemap.ClearAllTiles();
+        wallTilemap.ClearAllTiles();
+        emptyTilemap.ClearAllTiles();
+
+        // Destroy any previously instantiated objects
+        foreach (GameObject obj in instantiatedObjects)
+        {
+            if (obj != null)
+            {
+                Destroy(obj);
+            }
+        }
+
+        // Clear the list of instantiated objects
+        instantiatedObjects.Clear();
+
+        // Force garbage collection (optional, but can be used for debugging)
+        System.GC.Collect();
     }
 }

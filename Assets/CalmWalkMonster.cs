@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class CalmWalkMonster : MonoBehaviour
 {
@@ -58,6 +59,7 @@ public class CalmWalkMonster : MonoBehaviour
             {
                 Destroy(other.gameObject);
                 // Start a coroutine for ending screen
+                SceneManager.LoadScene(2);
             }
         }
     }

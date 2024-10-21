@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class PanicWalkMonster : MonoBehaviour
 {
@@ -52,6 +53,7 @@ public class PanicWalkMonster : MonoBehaviour
         {
             Destroy(other.gameObject);
             // Start a coroutine for ending screen
+            SceneManager.LoadScene(2);
         }
     }
     private IEnumerator WaitForReact()

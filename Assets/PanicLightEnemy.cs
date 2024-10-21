@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class PanicLightEnemy : MonoBehaviour
 {
@@ -51,6 +52,7 @@ public class PanicLightEnemy : MonoBehaviour
             {
                 Destroy(other.gameObject);
                 // Start a coroutine for ending screen
+                SceneManager.LoadScene(2);
             }
         }
     }

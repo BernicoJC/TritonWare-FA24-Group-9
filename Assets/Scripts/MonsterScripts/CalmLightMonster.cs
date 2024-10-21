@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class CalmLightMonster : MonoBehaviour
 {
@@ -54,6 +55,7 @@ public class CalmLightMonster : MonoBehaviour
             {
                 Destroy(other.gameObject);
                 // Start a coroutine for ending screen
+                SceneManager.LoadScene(2);
             }
         }
     }

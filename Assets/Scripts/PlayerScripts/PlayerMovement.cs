@@ -112,7 +112,7 @@ public class PlayerMovement : MonoBehaviour
 
     private void ChangeAnimation()
     {
-        if (horizontal == 0 && vertical == 0)
+        if (cantWalk || (horizontal == 0 && vertical == 0))
         {
             if (doctor.activeSelf)
             {

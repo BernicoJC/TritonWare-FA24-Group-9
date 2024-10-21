@@ -10,6 +10,6 @@ public class LightManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        text.text = "Candles: "+(lightCount.ToString());
+        text.text = "Matches: " + (lightCount.ToString());
     }
 }
