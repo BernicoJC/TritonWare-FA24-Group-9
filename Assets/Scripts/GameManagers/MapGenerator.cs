@@ -65,13 +65,20 @@ public class MapGenerator : MonoBehaviour
                 }
                 else if (tileType == 0)
                 {
-                    if (x < tiles.Length - 6 && int.Parse(lines[y].Split(',')[x + 1]) >= 1)
+                    if (x > 5 && int.Parse(lines[y].Split(',')[x - 1]) >= 1)
                     {
-                        wallTilemap.SetTile(tilePosition, wallBottomTile);
+                        floorTilemap.SetTile(tilePosition, floorTile);
                     }
                     else
                     {
-                        emptyTilemap.SetTile(tilePosition, emptyTile);
+                        if (x < tiles.Length - 6 && int.Parse(lines[y].Split(',')[x + 1]) >= 1)
+                        {
+                            wallTilemap.SetTile(tilePosition, wallBottomTile);
+                        }
+                        else
+                        {
+                            emptyTilemap.SetTile(tilePosition, emptyTile);
+                        }
                     }
                 }
             }
